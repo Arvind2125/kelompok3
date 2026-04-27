@@ -49,17 +49,17 @@
         }
         .nav-links a:hover, .nav-links a.active { background: var(--primary); color: white; }
 
-        /* --- DROPDOWN ABOUT US --- */
+        /* --- DROPDOWN SEMUA SUB BAB --- */
         .dropdown-content {
             display: none;
             position: absolute;
             top: 100%;
             left: 0;
             background-color: white;
-            min-width: 160px;
+            min-width: 200px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
             border-radius: 8px;
-            z-index: 1;
+            z-index: 1001;
             overflow: hidden;
             margin-top: 5px;
         }
@@ -71,11 +71,13 @@
             display: block;
             border-radius: 0;
             font-size: 0.9rem;
+            transition: 0.3s;
         }
 
         .dropdown-content a:hover {
             background-color: #f1f1f1;
             color: var(--primary);
+            padding-left: 20px;
         }
 
         .nav-links li:hover .dropdown-content {
@@ -133,13 +135,34 @@
         .vision-mission li { margin-bottom: 8px; position: relative; padding-left: 20px; }
         .vision-mission li::before { content: "•"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
 
-        /* --- HELP CENTER & CUSTOMER REVIEW --- */
+        /* --- HELP CENTER & CUSTOMER REVIEW (REVISED) --- */
         .contact-box { background: white; padding: 30px; border-radius: 20px; text-align: left; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .contact-box h4 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
 
         .review-section { margin-top: 40px; }
-        .review-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        /* CSS Baru Khusus Review agar sesuai foto */
+        .review-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex; /* Membuat layout menyamping */
+            align-items: center;
+            gap: 20px;
+            text-align: left;
+        }
+        .review-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%; /* Membuat foto jadi bulat */
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid #f0f0f0;
+        }
+        .review-content { flex-grow: 1; }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
         .rating { color: var(--accent); font-size: 0.9rem; }
 
         footer { background: var(--dark); color: white; padding: 50px 8% 30px; text-align: center; margin-top: 60px; border-radius: 50px 50px 0 0; }
@@ -153,14 +176,42 @@
             }
             .nav-active { transform: translateX(0); }
             .nav-links li { margin: 20px 0; }
-            .dropdown-content { position: static; box-shadow: none; display: block; text-align: center; }
+            .dropdown-content { 
+                position: static; 
+                box-shadow: none; 
+                display: none; 
+                text-align: center; 
+                background: #f8f9fa;
+                margin-top: 5px;
+            }
+            .nav-links li:hover .dropdown-content,
+            .nav-links li.active-dropdown .dropdown-content {
+                display: block;
+            }
             .burger { display: block; }
             .hero h1 { font-size: 1.8rem; }
+            .review-card { flex-direction: column; text-align: center; }
+            .review-header { flex-direction: column; }
         }
         
         .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
         .toggle .line2 { opacity: 0; }
         .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+        .stars i {
+            color: #ffc107;
+        }
+
+        /* Fix review styling */
+        .review-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .review-name { font-weight: 600; margin-bottom: 5px; color: var(--dark); }
+        .review-text { color: #555; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -171,17 +222,51 @@
             <span>AVELORA</span>
         </div>
         <ul class="nav-links">
-            <li><a onclick="showSection('home')" id="link-home" class="active">Home</a></li>
-            <li><a onclick="showSection('order')" id="link-order">Order</a></li>
-            <li><a onclick="showSection('tutorials')" id="link-tutorials">Tutorials</a></li>
+            <!-- HOME DROPDOWN -->
             <li>
-                <a onclick="showSection('about')" id="link-about">About Us <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                <a id="link-home">Home <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
                 <div class="dropdown-content">
-                    <a href="#team-target" onclick="showSection('about'); setTimeout(() => { document.getElementById('team-target').scrollIntoView({behavior: 'smooth'}); }, 100)">Team</a>
-                    <a href="#visi-target" onclick="showSection('about'); setTimeout(() => { document.getElementById('visi-target').scrollIntoView({behavior: 'smooth'}); }, 100)">Visi Misi</a>
+                    <a onclick="showSection('home')">🏠 Beranda</a>
                 </div>
             </li>
-            <li><a onclick="showSection('help')" id="link-help">Help Center</a></li>
+
+            <!-- ORDER DROPDOWN -->
+            <li>
+                <a id="link-order">Order <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                <div class="dropdown-content">
+                    <a onclick="showSection('order')">📋 Katalog Harga</a>
+                    <a onclick="showSection('order'); scrollToElement('payment-section')">💳 Cara Bayar</a>
+                    <a onclick="showSection('order'); scrollToElement('form-section')">📝 Form Pemesanan</a>
+                </div>
+            </li>
+
+            <!-- TUTORIALS DROPDOWN -->
+            <li>
+                <a id="link-tutorials">Tutorials <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                <div class="dropdown-content">
+                    <a onclick="showSection('tutorials')">📹 Cara Order & Bayar</a>
+                    <a onclick="showSection('tutorials'); scrollToElement('design-edu')">🎨 Edukasi Design</a>
+                </div>
+            </li>
+
+            <!-- ABOUT US DROPDOWN -->
+            <li>
+                <a id="link-about">About Us <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                <div class="dropdown-content">
+                    <a onclick="showSection('about'); scrollToElement('team-target')">👥 Tim Kami</a>
+                    <a onclick="showSection('about'); scrollToElement('visi-target')">🎯 Visi Misi</a>
+                </div>
+            </li>
+
+            <!-- HELP CENTER DROPDOWN -->
+            <li>
+                <a id="link-help">Help Center <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                <div class="dropdown-content">
+                    <a onclick="showSection('help'); scrollToElement('contact-section')">📞 Kontak</a>
+                    <a onclick="showSection('help'); scrollToElement('location-section')">📍 Lokasi</a>
+                    <a onclick="showSection('help'); scrollToElement('review-section')">⭐ Review</a>
+                </div>
+            </li>
         </ul>
         <div class="burger" onclick="toggleNav()">
             <div class="line1"></div>
@@ -190,7 +275,8 @@
         </div>
     </nav>
 
-   <section id="home" class="content-section active">
+    <!-- HOME SECTION -->
+    <section id="home" class="content-section active">
         <div class="hero">
             <img src="logo.png" alt="Avelora Logo" class="main-logo">
             <h1>INSPIRE • CREATE • INNOVATE</h1>
@@ -256,6 +342,7 @@
         </div>
     </section>
 
+    <!-- ORDER SECTION -->
     <section id="order" class="content-section">
         <h2 style="text-align: center; margin-bottom: 40px;">Katalog Produk & Harga</h2>
         <div class="grid">
@@ -280,16 +367,19 @@
                 <div class="card-body"><h3>Name Tag</h3><p>Simpel dan profesional.</p><span class="price-tag">Rp 15.000 - 50.000</span></div>
             </div>
         </div>
-        <div class="vision-mission" style="margin-top: 40px;">
-            <h3>Cara Pemesanan</h3>
+
+        <div id="payment-section" class="vision-mission" style="margin-top: 40px;">
+            <h3>💳 Cara Pemesanan & Payment</h3>
             <p>Pilih produk yang Anda inginkan, tentukan jenis desain dan jumlah pesanan. Masukkan data diri Anda (Nama, Alamat, Email) untuk proses administrasi.</p>
         </div>
-        <div class="contact-box" style="margin-top: 20px;">
-                <h4><i class="fas fa-wallet"></i> Payment</h4>
-                <p><b>BCA:</b> 8225 5852 7721</p>
-                <p><b>Gopay/OVO:</b> 0822 5852 7721</p>
+
+        <div id="payment-section" class="contact-box" style="margin-top: 20px;">
+            <h4><i class="fas fa-wallet"></i> Rekening Tujuan</h4>
+            <p><b>BCA:</b> 8225 5852 7721</p>
+            <p><b>Gopay/OVO:</b> 0822 5852 7721</p>
         </div>
-        <div style="text-align: center; margin-top: 50px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);">
+
+        <div id="form-section" style="text-align: center; margin-top: 50px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);">
             <h3 style="color: var(--primary); margin-bottom: 10px;">Siap Pesan Desain Anda?</h3>
             <p style="margin-bottom: 25px; color: #636e72;">Klik tombol di bawah untuk mengisi formulir pemesanan dan konfirmasi pembayaran secara instan.</p>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeSbNKDxrcBqBvyW8C-7W_MLT0pZXh6ZDH0CyR7_ANdPdpreA/viewform?usp=header" 
@@ -300,9 +390,11 @@
         </div>
     </section>
 
-   <section id="tutorials" class="content-section">
-        <h2 style="text-align: center; margin-bottom: 40px;">Pusat Tutorial</h2>
-        <div class="grid">
+    <!-- TUTORIALS SECTION -->
+    <section id="tutorials" class="content-section">
+        <h2 id="tutorial-main" style="text-align: center; margin-bottom: 40px;">Pusat Tutorial</h2>
+        
+        <div id="tutorial-order" class="grid">
             <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
                 <div style="width: 100%; height: 250px; overflow: hidden; border-radius: 15px; background: #000; display: flex; align-items: center;">
                     <video width="100%" height="100%" controls style="object-fit: contain;">
@@ -311,29 +403,35 @@
                     </video>
                 </div>
                 <div style="margin-top: 15px;">
-                    <h3 style="font-size: 1.2rem;">Tutorial Order & Bayar</h3>
+                    <h3 style="font-size: 1.2rem;">📹 Tutorial Order & Bayar</h3>
                     <p style="font-size: 0.9rem;">Panduan lengkap langkah demi langkah melakukan pemesanan hingga transaksi.</p>
                 </div>
             </div>
+        </div>
 
-            <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
-                <div style="width: 100%; height: 250px; overflow: hidden; border-radius: 15px; background: #000; display: flex; align-items: center;">
-                    <video width="100%" height="100%" controls style="object-fit: contain;">
-                        <source src="pembelajarandesign.mp4" type="video/mp4">
-                        Browser Anda tidak mendukung tag video.
-                    </video>
-                </div>
-                <div style="margin-top: 15px;">
-                    <h3 style="font-size: 1.2rem;">Edukasi Design Grafis</h3>
-                    <p style="font-size: 0.9rem;">Mempelajari dasar-dasar elemen visual dan prinsip desain grafis yang efektif.</p>
+        <div id="design-edu" style="margin-top: 60px;">
+            <h3 style="text-align: center; color: var(--primary); margin-bottom: 40px;">🎨 Edukasi Design Grafis</h3>
+            <div class="grid">
+                <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+                    <div style="width: 100%; height: 250px; overflow: hidden; border-radius: 15px; background: #000; display: flex; align-items: center;">
+                        <video width="100%" height="100%" controls style="object-fit: contain;">
+                            <source src="pembelajarandesign.mp4" type="video/mp4">
+                            Browser Anda tidak mendukung tag video.
+                        </video>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <h3 style="font-size: 1.2rem;">Dasar-dasar Design Grafis</h3>
+                        <p style="font-size: 0.9rem;">Mempelajari elemen visual dan prinsip desain grafis yang efektif.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section id="about" class="content-section">
         <div id="team-target">
-            <h2 style="text-align: center;">The Creative Team</h2>
+            <h2 style="text-align: center;">👥 The Creative Team</h2>
             <div class="team-container">
                 <div class="team-card"><img src="valerie.jpeg" alt="Vallerie"><h4>Vallerie Napitupulu</h4><p>Business Owner</p></div>
                 <div class="team-card"><img src="vincent.jpeg" alt="Vincent"><h4>Vincent Pasaribu</h4><p>Creative Director</p></div>
@@ -342,10 +440,10 @@
         </div>
 
         <div id="visi-target" class="vision-mission" style="text-align: center;">
-            <h3>Visi</h3>
+            <h3>🎯 Visi</h3>
             <p>Menjadi jasa desain grafis yang kreatif, inovatif, and terpercaya bagi pelanggan.</p>
             <br>
-            <h3>Misi</h3>
+            <h3>🎯 Misi</h3>
             <ul>
                 <li>Menghasilkan desain yang orisinal dan sesuai kebutuhan.</li>
                 <li>Mengikuti tren desain grafis terkini.</li>
@@ -355,46 +453,60 @@
         </div>
     </section>
 
+    <!-- HELP SECTION -->
     <section id="help" class="content-section">
         <h2 style="text-align: center; margin-bottom: 40px;">Bantuan & Kontak</h2>
-        <div class="grid">
+        
+        <div id="contact-section" class="grid">
             <div class="contact-box">
-                <h4><i class="fas fa-envelope"></i> Hubungi Kami</h4>
+                <h4><i class="fas fa-envelope"></i> 📞 Hubungi Kami</h4>
                 <p><i class="fab fa-whatsapp"></i> 081284580782</p>
                 <p><i class="fab fa-instagram"></i> @aveloradesign</p>
                 <p><i class="fas fa-at"></i> avelora@gmail.com</p>
             </div>
-            <div class="contact-box">
-                <h4><i class="fas fa-map-marker-alt"></i> Lokasi Kami</h4>
+            <div id="location-section" class="contact-box">
+                <h4><i class="fas fa-map-marker-alt"></i> 📍 Lokasi Kami</h4>
                 <p>Jl. Kolonel Masturi No.288, Cihanjuang Rahayu, Kec. Parongpong, Kabupaten Bandung Barat, Jawa Barat 40559.</p>
             </div>
         </div>
 
-        <div class="review-section">
-            <h3 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-star"></i> Customer Reviews</h3>
-            <div class="review-card">
-                <div class="review-header">
-                    <strong>Tok Dalang</strong>
-                    <div class="rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
+        <div id="review-section" class="review-section">
+            <h3 style="margin-bottom: 10px; color: black;">⭐ Customer Review</h3>
+            <p style="margin-bottom: 25px; color: #555;">
+                <b>4,8 ⭐</b> Product Review (12.472 Reviews)
+            </p>
+
+            <!-- Review 1 -->
+            <div class="review-item">
+                <p class="review-name">Felicia Kaligis</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-                <p style="font-size: 0.9rem; color: #636e72;">"Desain logo yang dibuat sangat profesional dan sesuai dengan ekspektasi saya. Prosesnya juga cepat!"</p>
+                <p class="review-text">
+                    Pelayanan sangat memuaskan! Saya pesan desain logo untuk brand baru saya, dan hasilnya benar-benar sesuai dengan visi yang saya inginkan. Komunikasi lancar, revisi cepat, dan hasil akhir terlihat sangat profesional. Sangat direkomendasikan!
+                </p>
             </div>
-            <div class="review-card">
-                <div class="review-header">
-                    <strong>Bobon Santoso</strong>
-                    <div class="rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    </div>
+
+            <!-- Review lainnya... -->
+            <div class="review-item">
+                <p class="review-name">Adhe Mario</p>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-                <p style="font-size: 0.9rem; color: #636e72;">"Sangat suka dengan desain poster untuk event sekolah saya. Warnanya eye-catching!"</p>
+                <p class="review-text">
+                    Desain yang dibuat benar-benar unik dan tidak pasaran. Timnya mampu menerjemahkan ide saya yang masih abstrak menjadi visual yang menarik.
+                </p>
             </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">
-                    Tulis Review Anda
-                </button>
-            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">
+               Tulis Review Anda
+            </button>
         </div>
     </section>
 
@@ -409,7 +521,10 @@
             sections.forEach(s => s.classList.remove('active'));
             
             const targetSection = document.getElementById(sectionId);
-            if(targetSection) targetSection.classList.add('active');
+            if(targetSection) {
+                targetSection.classList.add('active');
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
 
             const links = document.querySelectorAll('.nav-links a');
             links.forEach(l => l.classList.remove('active'));
@@ -417,8 +532,17 @@
             const targetLink = document.getElementById('link-' + sectionId);
             if(targetLink) targetLink.classList.add('active');
 
-            if(document.querySelector('.nav-links').classList.contains('nav-active')) toggleNav();
-            window.scrollTo(0, 0);
+            // Tutup mobile nav jika aktif
+            if(document.querySelector('.nav-links').classList.contains('nav-active')) {
+                toggleNav();
+            }
+        }
+
+        function scrollToElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function toggleNav() {
@@ -427,6 +551,11 @@
             nav.classList.toggle('nav-active');
             burger.classList.toggle('toggle');
         }
+
+        // Inisialisasi active link untuk Home
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('link-home').classList.add('active');
+        });
     </script>
 </body>
 </html>
